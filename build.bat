@@ -3,6 +3,9 @@ setlocal
 
 cd /d "%~dp0"
 
+tasklist /FI "IMAGENAME eq satu-image-bot.exe" 2>nul | find /I "satu-image-bot.exe" >nul
+if not errorlevel 1 goto :bot_running
+
 set "PYTHON=python"
 where python >nul 2>nul
 if errorlevel 1 (
@@ -37,6 +40,15 @@ exit /b 0
 :no_python
 echo.
 echo Build failed: Python was not found. Install Python 3 or the Python launcher and try again.
+echo.
+pause
+endlocal
+exit /b 1
+
+:bot_running
+echo.
+echo Build stopped: satu-image-bot.exe is currently running.
+echo Close the bot window and all related browser windows, then run build.bat again.
 echo.
 pause
 endlocal
